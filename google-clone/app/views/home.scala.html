@@ -1,0 +1,38 @@
+@main("Google clone") {
+
+    <input type="text" id="searchBox" name="searchBox">
+    <input type="button" id="searchButton" value="Search">
+
+    <div id="searchResults">
+    </div>
+
+    <script type="application/javascript">
+        $("#searchButton" ).click(function() {
+            var searchTerms = encodeURI($("#searchBox").val());
+            $.ajax(
+                {
+    	    		type: "GET",
+    	    		url: "/v1/search?searchTerms=" + searchTerms,
+
+    	    		success: function(data) {
+                        var result = data.hits.hits;
+
+                        $.each(result, function(index, element) {
+                            var el = $('<div class="searchResult"><span></span><a></a><p></p></div>');
+
+                            $("a", el).text(element._source.title);
+                            $("a", el).attr("href", element._source.url);
+                            $("p", el).text(element._source.url);
+
+                            $('#searchResults').append(el);
+                        });
+    	    		},
+
+    	    		contentType:"application/json",
+    	    		dataType:"json"
+    	        }
+    	    );
+        });
+    </script>
+
+}

@@ -1,7 +1,27 @@
-@(message: String)
+@main("Google clone") {
 
-@main("Welcome to Play") {
+    <input type="text" id="indexUrl" name="indexUrl">
+    <input type="button" id="indexButton" value="Add to index">
 
-    @play20.welcome(message, style = "Java")
+    <div id="results">
+    </div>
+
+    <script type="application/javascript">
+        $("#indexButton" ).click(function() {
+            var indexUrl = $("#indexUrl").val();
+            $.ajax(
+                {
+    	    		type: "POST",
+    	    		url: "/v1/index?url=" + encodeURIComponent(indexUrl),
+
+    	    		success: function(data) {
+                        var el = $('<div class="searchResult"><span></span><p></p></div>');
+                        $("p", el).text("Success run index for : " + $("#indexUrl").val());
+                        $('#results').append(el);
+    	    		}
+    	        }
+    	    );
+        });
+    </script>
 
 }
