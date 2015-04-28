@@ -21,6 +21,7 @@ public class CrawlerActor extends UntypedActor {
 
     public static ActorRef CRAWLER_ACTOR;
 
+    public static final int MAX_CRAWLE_DEEP_SIZE = 3;
 
     @Inject
     IPageCrawlerService pageCrawlerService;
@@ -41,7 +42,7 @@ public class CrawlerActor extends UntypedActor {
     private void addPageToIndex(CrawlePageMessage crawlePageMessage) throws IOException {
         final Integer crawleLinksDeepSize = crawlePageMessage.deepSize + 1;
 
-        if(crawleLinksDeepSize <= 3) {
+        if(crawleLinksDeepSize <= MAX_CRAWLE_DEEP_SIZE) {
             crawlePageMessage.links.forEach(link -> {
                 String url = link.attr("abs:href");
                 try {
@@ -62,7 +63,7 @@ public class CrawlerActor extends UntypedActor {
                         return "addToIndexAsync";
                     });
                 } catch (IOException e) {
-                    Logger.error("Can't connect to url : " + url);
+                    Logger.error("Can't connect to url : " + url + ". Details: " + e.getMessage());
                 }
             });
         }

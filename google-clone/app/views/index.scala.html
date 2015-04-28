@@ -1,13 +1,31 @@
 @main("Google clone") {
 
-    <input type="text" id="indexUrl" name="indexUrl">
-    <input type="button" id="indexButton" value="Add to index">
+    <div class="container" id="indexContainer">
 
-    <div id="results">
+        <center class="logo">
+            <div style="background:url(https://www.google.com.ua/images/srpr/logo11w.png) no-repeat;
+                        background-size:269px 95px;height:95px;width:269px"
+                        title="Google" id="hplogo" onload="window.lol&amp;&amp;lol()" align="left">
+                <div nowrap=""
+                    style="color:#777;font-size:16px;font-weight:bold;
+                    position:relative;left:218px;top:70px">Clone
+                </div>
+            </div>
+        </center>
+
+        <div class="container">
+            <input type="button" id="indexButton" class="btn btn-default" value="Add to index">
+            <div class="index-url-container">
+                <input type="text" id="indexUrl" class="form-control" name="indexUrl">
+            </div>
+        </div>
+
+        <div class="container" id="results"/>
     </div>
 
     <script type="application/javascript">
         $("#indexButton" ).click(function() {
+            $('#results').html('');
             var indexUrl = $("#indexUrl").val();
             $.ajax(
                 {

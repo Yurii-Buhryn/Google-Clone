@@ -6,7 +6,6 @@ import dto.AddToIndex;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Hours;
-import play.Logger;
 import play.libs.F;
 import play.libs.Json;
 import play.libs.ws.WS;
@@ -35,7 +34,7 @@ public class ElasticSearchService implements IElasticSearchService {
 
     @Override
     public Promise<WSResponse> searchAsync(String indexName, String searchTerms) {
-        String searchQuery = ELASTIC_SEARCH_URL + indexName + "/_search";
+        String searchQuery = ELASTIC_SEARCH_URL + indexName + "/_search?size=200";
 
         ObjectNode contentJson = Json.newObject();
         contentJson.put("content", searchTerms);
@@ -65,9 +64,7 @@ public class ElasticSearchService implements IElasticSearchService {
                 Long crawleDateTm = source.get("crawleDate").asLong();
                 DateTime crawleDate = new DateTime(crawleDateTm);
 
-                Integer diffHours = Hours.hoursBetween(DateTime.now(DateTimeZone.UTC), crawleDate).getHours();
-                Logger.info("<--------------------- id : " + id + " --------------------->");
-                Logger.info("<--------------------- diffHours : " + diffHours + " --------------------->");
+                Integer diffHours = Hours.hoursBetween(crawleDate, DateTime.now(DateTimeZone.UTC)).getHours();
 
                 isAddToIndex = diffHours >= 5;
             }

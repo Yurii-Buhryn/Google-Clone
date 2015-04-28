@@ -15,19 +15,20 @@ public class PageCrawlerService implements IPageCrawlerService{
 
     @Override
     public ParseResponse parsePage(String pageUrl) throws IOException {
-        Document doc = Jsoup.connect(pageUrl).timeout(10000).get();
+        Document doc = Jsoup
+                .connect(pageUrl)
+                .ignoreContentType(true)
+                .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0")
+                .timeout(10000)
+                .get();
+
         URLEncoder.encode(doc.location(), "UTF-8");
 
         String pageId = URLEncoder.encode(doc.location(), "UTF-8");
         String title = doc.title();
         String content = Jsoup.parse(doc.html()).text();
-        Elements imports = doc.select("link[href]");
         Elements links = doc.select("a[href]");
 
-        Elements allLinks = new Elements();
-        allLinks.addAll(imports);
-        allLinks.addAll(links);
-
-        return new ParseResponse(pageId, title, content, allLinks);
+        return new ParseResponse(pageId, title, content, links);
     }
 }

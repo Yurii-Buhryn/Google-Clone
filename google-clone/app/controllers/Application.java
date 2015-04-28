@@ -1,14 +1,7 @@
 package controllers;
 
-import play.Logger;
-import play.libs.F;
-import play.libs.ws.WSResponse;
 import play.mvc.*;
-
-import services.ElasticSearchService;
-import services.IElasticSearchService;
 import views.html.*;
-
 import java.io.IOException;
 
 /**
