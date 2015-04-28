@@ -62,7 +62,7 @@ public class CrawlerActor extends UntypedActor {
 
                         return "addToIndexAsync";
                     });
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Logger.error("Can't connect to url : " + url + ". Details: " + e.getMessage());
                 }
             });
